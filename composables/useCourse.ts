@@ -50,6 +50,7 @@ export default () => {
       lessons: ch.lessons.map((lesson, lessonIndex) => ({
         ...lesson,
         id: lessonIndex + 1,
+        chapterId: chapterIndex + 1,
         path: `/course/${chapterIndex + 1}/${
           lessonIndex + 1
         }`,

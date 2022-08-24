@@ -20,7 +20,7 @@
           v-for="(lesson, index) in chapter.lessons"
           class="no-underline prose-sm font-normal py-1 px-4 -mx-4 border border-white rounded-md even:bg-gray-100 hover:bg-blue-50 hover:cursor-pointer transition-colors"
           :key="lesson.path"
-          to="/course/23/34"
+          :to="lesson.path"
           :class="{
             'text-blue-500': lesson.path === $route.path,
             'text-gray-500': lesson.path !== $route.path,

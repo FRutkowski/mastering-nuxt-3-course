@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="mt-0 uppercase font-bold text-slate-400 mb-1">
-      Lesson {{ lesson.id }}
+      Lesson {{ lesson.chapterId }} - {{ lesson.id }}
     </p>
     <h2 class="my-0">{{ lesson.title }}</h2>
     <div class="flex space-x-4 mt-2 mb-8">
