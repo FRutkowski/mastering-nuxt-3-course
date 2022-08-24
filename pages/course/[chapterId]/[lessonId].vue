@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="mt-0 uppercase font-bold text-slate-400 mb-1">
-      Lesson {{ lessonId }}
+      Lesson {{ lesson.id }}
     </p>
     <h2 class="my-0">{{ lesson.title }}</h2>
     <div class="flex space-x-4 mt-2 mb-8">
@@ -26,33 +26,9 @@
 </template>
 
 <script setup>
-const { chapters, name } = useCourse();
-const route = useRoute();
-const chapterId = computed(() =>
-  parseInt(route.params.chapterId)
-);
-const lessonId = computed(() =>
-  parseInt(route.params.lessonId)
-);
-const lesson = computed(() => {
-  return chapters[chapterId.value - 1].lessons[
-    lessonId.value - 1
-  ];
-});
-
+const { name } = useCourse();
+const { lesson } = useLesson();
 useHead({
   titleTemplate: () => `${lesson.value.title} | ${name}`,
 });
 </script>
-
-<style>
-.page-enter-active,
-.page-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-}
-</style>
