@@ -13,14 +13,25 @@
       <div
         class="prose mr-4 p-8 bg-white rounded-md min-w-[20ch] flex flex-col"
       >
-        <h3>Lessons</h3>
-        <NuxtLink
-          v-for="lesson in lessons"
-          :key="lesson.path"
-          :to="lesson.path"
+        <h3>Chapters</h3>
+        <div
+          class="space-y-1 mb-4 flex flex-col"
+          v-for="chapter in chapters"
         >
-          {{ lesson.title }}
-        </NuxtLink>
+          <h4>{{ chapter.title }}</h4>
+          <NuxtLink
+            v-for="(lesson, index) in chapter.lessons"
+            class="no-underline prose-sm font-normal py-1 px-4 -mx-4 border border-white rounded-md even:bg-gray-100 hover:bg-blue-50 hover:cursor-pointer transition-colors"
+            :key="lesson.path"
+            :to="lesson.path"
+            :class="{
+              'text-blue-500': lesson.path === $route.path,
+              'text-gray-500': lesson.path !== $route.path,
+            }"
+          >
+            {{ index + 1 }}. {{ lesson.title }}
+          </NuxtLink>
+        </div>
       </div>
 
       <div class="prose p-12 bg-white rounded-md w-[65ch]">
@@ -31,5 +42,6 @@
 </template>
 
 <script setup>
-const { name, lessons } = useCourse();
+const { name, chapters } = useCourse();
+console.log(chapters);
 </script>
