@@ -28,6 +28,7 @@
 <script setup>
 const { name } = useCourse();
 const { lesson } = useLesson();
+
 useHead({
   titleTemplate: () => `${lesson.value.title} | ${name}`,
 });

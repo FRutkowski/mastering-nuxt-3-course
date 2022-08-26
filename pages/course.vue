@@ -32,7 +32,7 @@
     </div>
 
     <div class="prose p-12 bg-white rounded-md w-[65ch]">
-      <NuxtErrorBoundary :key="$route.fullPath">
+      <NuxtErrorBoundary>
         <NuxtPage />
 
         <template #error="{ error }">
