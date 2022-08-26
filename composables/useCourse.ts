@@ -1,4 +1,41 @@
-const chapters = [
+import createSlug from '~/utils/createSlug';
+
+type ChapterSource = {
+  title: string;
+  lessons: LessonSource[];
+};
+
+type LessonSource = {
+  title: string;
+  content: string;
+  video?: string;
+  source?: string;
+};
+
+type Course = {
+  name: string;
+  chapters: Chapter[];
+};
+
+type Chapter = {
+  id: number;
+  title: string;
+  slug: string;
+  lessons: Lesson[];
+};
+
+type Lesson = {
+  id: number;
+  chapterId: number;
+  title: string;
+  slug: string;
+  content: string;
+  path: string;
+  video?: string;
+  source?: string;
+};
+
+const chapters: ChapterSource[] = [
   {
     title: 'Chapter 1',
     lessons: [
@@ -42,19 +79,37 @@ const chapters = [
   },
 ];
 
-export default () => {
+export default (): Course => {
   return {
     name: 'Mastering Nuxt ',
-    chapters: chapters.map((ch, chapterIndex) => ({
-      ...ch,
-      lessons: ch.lessons.map((lesson, lessonIndex) => ({
-        ...lesson,
-        id: lessonIndex + 1,
-        chapterId: chapterIndex + 1,
-        path: `/course/${chapterIndex + 1}/${
-          lessonIndex + 1
-        }`,
-      })),
-    })),
+    chapters: chapters.map((ch, chapterIndex) => {
+      const chapterSlug = createSlug(
+        `${chapterIndex + 1}`,
+        ch.title
+      );
+
+      const lessons: Lesson[] = ch.lessons.map(
+        (lesson, lessonIndex) => {
+          const lessonSlug = createSlug(
+            `${lessonIndex + 1}`,
+            lesson.title
+          );
+          return {
+            ...lesson,
+            slug: lessonSlug,
+            id: lessonIndex + 1,
+            chapterId: chapterIndex + 1,
+            path: `/course/chapter/${chapterSlug}/lesson/${lessonSlug}`,
+          };
+        }
+      );
+
+      return {
+        ...ch,
+        slug: chapterSlug,
+        id: chapterIndex + 1,
+        lessons: lessons,
+      };
+    }),
   };
 };

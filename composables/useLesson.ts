@@ -1,31 +1,37 @@
+import unwrapArray from '~/utils/unwrapArray';
+
 export default function useLesson() {
   const { chapters } = useCourse();
   const route = useRoute();
 
-  const chapterId = computed(() => {
-    if (route.params.chapterId) {
-      return parseInt(route.params.chapterId as string);
-    }
-    return null;
+  const chapterSlug = computed(() => {
+    return unwrapArray(route.params.chapterSlug) || null;
   });
-  const lessonId = computed(() => {
-    if (route.params.lessonId) {
-      return parseInt(route.params.lessonId as string);
+  const lessonSlug = computed(() => {
+    return unwrapArray(route.params.lessonSlug) || null;
+  });
+
+  const chapter = computed(() => {
+    if (chapterSlug.value) {
+      return chapters.find(
+        (ch) => ch.slug === chapterSlug.value
+      );
     }
     return null;
   });
   const lesson = computed(() => {
-    if (chapterId.value && lessonId.value) {
-      return chapters[chapterId.value - 1].lessons[
-        lessonId.value - 1
-      ];
+    if (lessonSlug.value) {
+      return chapter.value.lessons.find(
+        (lesson) => lesson.slug === lessonSlug.value
+      );
     }
     return null;
   });
 
   return {
+    chapter,
     lesson,
-    chapterId,
-    lessonId,
+    chapterSlug,
+    lessonSlug,
   };
 }
