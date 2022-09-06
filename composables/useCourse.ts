@@ -1,4 +1,5 @@
 import createSlug from '~/utils/createSlug';
+import { useLocalStorage } from '@vueuse/core';
 
 type ChapterSource = {
   title: string;
@@ -80,12 +81,40 @@ const chapters: ChapterSource[] = [
 ];
 
 export default (): Course => {
+  const progress = useLocalStorage('progress', []);
+
   return {
     name: 'Mastering Nuxt ',
     chapters: chapters.map((ch, chapterIndex) => {
       const chapterSlug = createSlug(
         `${chapterIndex + 1}`,
         ch.title
+      );
+      const completedLessons = computed(
+        () => {
+          if (!progress.value[chapterIndex]) {
+            return 0;
+          }
+
+          let completed = 0;
+          for (const lesson of progress.value[
+            chapterIndex
+          ]) {
+            if (lesson) {
+              completed++;
+            }
+          }
+          return completed;
+        },
+        {
+          onTrack: (e) => console.log('track', e),
+          onTrigger: (e) => console.log('trigger', e),
+        }
+      );
+      const percentComplete = computed(() =>
+        Number(
+          (completedLessons.value / ch.lessons.length) * 100
+        ).toFixed(0)
       );
 
       const lessons: Lesson[] = ch.lessons.map(
@@ -97,8 +126,8 @@ export default (): Course => {
           return {
             ...lesson,
             slug: lessonSlug,
-            id: lessonIndex + 1,
-            chapterId: chapterIndex + 1,
+            id: lessonIndex,
+            chapterId: chapterIndex,
             path: `/course/chapter/${chapterSlug}/lesson/${lessonSlug}`,
           };
         }
@@ -106,8 +135,12 @@ export default (): Course => {
 
       return {
         ...ch,
+        progress: {
+          completed: completedLessons,
+          percent: percentComplete,
+        },
         slug: chapterSlug,
-        id: chapterIndex + 1,
+        id: chapterIndex,
         lessons: lessons,
       };
     }),

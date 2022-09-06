@@ -15,7 +15,12 @@
         class="space-y-1 mb-4 flex flex-col"
         v-for="chapter in chapters"
       >
-        <h4>{{ chapter.title }}</h4>
+        <h4>
+          {{ chapter.title }}
+          <span class="font-medium"
+            >({{ chapter.progress.completed }})</span
+          >
+        </h4>
         <NuxtLink
           v-for="(lesson, index) in chapter.lessons"
           class="no-underline prose-sm font-normal py-1 px-4 -mx-4 border border-white rounded-md even:bg-gray-100 hover:bg-blue-50 hover:cursor-pointer transition-colors"

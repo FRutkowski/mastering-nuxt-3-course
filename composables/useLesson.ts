@@ -1,4 +1,5 @@
 import unwrapArray from '~/utils/unwrapArray';
+import { useLocalStorage } from '@vueuse/core';
 
 export default function useLesson() {
   const { chapters } = useCourse();
@@ -28,10 +29,48 @@ export default function useLesson() {
     return null;
   });
 
+  const stateProgress = useState('progress', () => {
+    return [];
+  });
+  const progress = useLocalStorage(
+    'progress',
+    stateProgress
+  );
+
+  const isLessonComplete = computed(() => {
+    if (!progress.value[lesson.value.chapterId]) {
+      return false;
+    }
+
+    if (
+      !progress.value[lesson.value.chapterId][
+        lesson.value.id
+      ]
+    ) {
+      return false;
+    }
+
+    return progress.value[lesson.value.chapterId][
+      lesson.value.id
+    ];
+  });
+
+  const toggleComplete = () => {
+    if (!progress.value[lesson.value.chapterId]) {
+      progress.value[lesson.value.chapterId] = [];
+    }
+
+    progress.value[lesson.value.chapterId][
+      lesson.value.id
+    ] = !isLessonComplete.value;
+  };
+
   return {
     chapter,
     lesson,
     chapterSlug,
     lessonSlug,
+    isLessonComplete,
+    toggleComplete,
   };
 }
