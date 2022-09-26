@@ -2,9 +2,5 @@ import { defineNuxtConfig } from 'nuxt';
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/tailwindcss', '@vueuse/nuxt'],
-  pageTransition: {
-    name: 'fade',
-    mode: 'out-in',
-  },
+  modules: ['@nuxtjs/tailwindcss'],
 });
