@@ -46,15 +46,7 @@
             <code>{{ error }}</code>
           </p>
 
-          <p>
-            Go to the
-            <a
-              class="hover:cursor-pointer"
-              @click="clearLessonError"
-            >
-              first lesson.
-            </a>
-          </p>
+          <ClearError />
         </template>
       </NuxtErrorBoundary>
     </div>
@@ -63,10 +55,6 @@
 
 <script setup>
 const { name, chapters } = useCourse();
-
-const clearLessonError = () => {
-  clearError({ redirect: '/course/1/1' });
-};
 </script>
 
 <style>
