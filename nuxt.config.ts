@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   vite: {
     build: {
       rollupOptions: {
-        external: ['vue', 'ufo', 'defu']
+        external: ['vue', 'ufo', 'defu', 'vue/server-renderer']
       }
     }
   }
