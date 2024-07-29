@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   vite: {
     build: {
       rollupOptions: {
-        external: ['vue']
+        external: ['vue', 'ufo']
       }
     }
   }
