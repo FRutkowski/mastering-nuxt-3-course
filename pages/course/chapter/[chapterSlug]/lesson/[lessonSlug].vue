@@ -8,6 +8,13 @@ const chapter = computed(() => {
   );
 });
 
+if (!chapter.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'Chapter not found'
+  })
+}
+
 const lesson = computed(() => {
   return chapter.value.lessons.find(
     (lesson) => lesson.slug === route.params.lessonSlug
@@ -75,7 +82,9 @@ const toggleComplete = () => {
     <p>{{ lesson.text }}</p>
     <LessonCompleteButton
       :model-value="isLessonComplete"
-      @update:model-value="toggleComplete"
+      @update:model-value="
+        throw createError('Could not update');
+      "
     />
   </div>
 </template>
